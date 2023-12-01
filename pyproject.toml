@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "advent"
+version = "0.0.23"
+description = ""
+authors = ["Michael McClimon <michael@mcclimon.org>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
