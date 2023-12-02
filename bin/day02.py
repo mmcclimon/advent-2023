@@ -1,5 +1,5 @@
 from advent import input
-from collections import defaultdict
+from collections import Counter
 
 
 def main():
@@ -19,17 +19,16 @@ def main():
 
 def parse(line):
     start, rest = line.split(": ")
+    id = int(start.removeprefix("Game "))
 
-    found = defaultdict(int)
+    found = Counter()
 
     for hunk in rest.split("; "):
         for marbles in hunk.split(", "):
             num, color = marbles.split()
-            num = int(num)
-            found[color] = max(found[color], num)
+            found[color] = max(found[color], int(num))
 
-    id = start.removeprefix("Game ")
-    return int(id), found["red"], found["green"], found["blue"]
+    return id, found["red"], found["green"], found["blue"]
 
 
 if __name__ == "__main__":
