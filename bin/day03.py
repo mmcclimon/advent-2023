@@ -45,17 +45,15 @@ def is_part_number(symbols, r, match):
 
 # returns the coordinates of the thing it touches
 def touches_symbol(symbols, r, c):
-    for rx in [-1, 0, 1]:
-        for cx in [-1, 0, 1]:
-            r2, c2 = r + rx, c + cx
-            try:
-                # (I manually verified every number only touches 1 symbol)
-                if symbols[(r2, c2)]:
-                    return r2, c2
-            except KeyError:
-                pass
-
-    return
+    return next(
+        (
+            (r + dr, c + dc)
+            for dr in [-1, 0, 1]
+            for dc in [-1, 0, 1]
+            if (r + dr, c + dc) in symbols
+        ),
+        None,
+    )
 
 
 if __name__ == "__main__":
