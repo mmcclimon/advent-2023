@@ -3,44 +3,40 @@ from collections import Counter
 
 
 def main():
-    lines = list(input.lines())
-    print(part_one(lines))
-    print(part_two(lines))
+    scores = calc_scores()
 
+    # part 1
+    p1 = sum(2 ** (s - 1) for s in scores.values() if s)
 
-def part_one(lines):
-    sum = 0
-
-    for line in lines:
-        card, rest = line.split(": ")
-        if score := calc_score(rest):
-            sum += 2 ** (score - 1)
-
-    return sum
-
-
-def part_two(lines):
+    # part 2
     copies = Counter()
 
-    for line in lines:
-        start, rest = line.split(": ")
-        card = int(start.removeprefix("Card "))
+    for card, score in scores.items():
         copies[card] += 1
-
-        score = calc_score(rest)
 
         for n in range(card + 1, card + score + 1):
             copies[n] += copies[card]
 
-    return copies.total()
+    p2 = copies.total()
+
+    print(f"part 1: {p1}")
+    print(f"part 1: {p2}")
 
 
-def calc_score(nums):
-    winners, ours = nums.split(" | ")
-    winners = {int(n) for n in winners.split()}
-    ours = {int(n) for n in ours.split()}
+def calc_scores():
+    scores = {}
 
-    return len(winners.intersection(ours))
+    for line in input.lines():
+        start, rest = line.split(": ")
+        card = int(start.removeprefix("Card "))
+
+        winners, ours = rest.split(" | ")
+        winners = {int(n) for n in winners.split()}
+        ours = {int(n) for n in ours.split()}
+
+        scores[card] = len(winners.intersection(ours))
+
+    return scores
 
 
 if __name__ == "__main__":
