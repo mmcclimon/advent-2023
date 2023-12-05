@@ -8,45 +8,40 @@ def main():
     seeds, *hunks = input.hunks()
     seeds = [int(n) for n in seeds[0].removeprefix("seeds: ").split()]
 
+    transformer = make_transformer(hunks)
+    print(min(transformer(seed) for seed in seeds))
+
+
+def make_transformer(hunks):
     lookups = []
-
-    for hunk in hunks:
-        _, m = generate_map(hunk)
-        lookups.append(m)
-
-    location = math.inf
-
-    for seed in seeds:
-        for transformer in lookups:
-            seed = transformer(seed)
-
-        location = min(location, seed)
-
-    print(location)
-
-
-def generate_map(lines):
-    match = re.match(r"[a-z]+-to-(\w+) map", lines[0])
-    assert match is not None
-    kind = match.group(1)
 
     Val = collections.namedtuple('Key', ['dst', 'src', 'range'])
 
-    lookup = {}
+    for hunk in hunks:
+        match = re.match(r"[a-z]+-to-(\w+) map", hunk[0])
+        assert match is not None
+        kind = match.group(1)
+        _ = kind
 
-    for line in lines[1:]:
-        dst, src, range = (int(n) for n in line.split())
-        lookup[src] = Val(dst, src, range)
+        lookup = {}
 
-    def fn(source):
-        for k, val in lookup.items():
-            if k <= source <= k + val.range:
-                delta = source - val.src
-                return val.dst + delta
+        for line in hunk[1:]:
+            dst, src, range = (int(n) for n in line.split())
+            lookup[src] = Val(dst, src, range)
 
-        return source
+        lookups.append(lookup)
 
-    return kind, fn
+    def fn(item):
+        for lookup in lookups:
+            for k, val in lookup.items():
+                if k <= item < k + val.range:
+                    delta = item - val.src
+                    item = val.dst + delta
+                    break
+
+        return item
+
+    return fn
 
 
 if __name__ == "__main__":
