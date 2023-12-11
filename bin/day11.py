@@ -16,36 +16,31 @@ def main():
     empty_rows = {r for r in range(0, max(rows) + 1) if r not in rows}
     empty_cols = {c for c in range(0, max(cols) + 1) if c not in cols}
 
-    sum1 = 0
-    sum2 = 0
-    scale = 1_000_000
+    print("part 1:", compute(galaxies, empty_rows, empty_cols, 2))
+    print("part 2:", compute(galaxies, empty_rows, empty_cols, 1_000_000))
 
+
+def compute(galaxies, empty_rows, empty_cols, scale):
+    sum = 0
     for left, right in itertools.combinations(galaxies, 2):
-        # goofy
-        minr = min(left[0], right[0])
-        maxr = max(left[0], right[0])
-        minc = min(left[1], right[1])
-        maxc = max(left[1], right[1])
+        rows_passed = len([r for r in empty_rows if between(left[0], r, right[0])])
+        cols_passed = len([c for c in empty_cols if between(left[1], c, right[1])])
 
-        rows_passed = len([r for r in empty_rows if minr < r < maxr])
-        cols_passed = len([c for c in empty_cols if minc < c < maxc])
-
-        sum1 += (
-            abs(left[0] - right[0])
-            + rows_passed
-            + abs(left[1] - right[1])
-            + cols_passed
-        )
-
-        sum2 += (
+        sum += (
             abs(left[0] - right[0])
             + (rows_passed * (scale - 1))
             + abs(left[1] - right[1])
             + (cols_passed * (scale - 1))
         )
 
-    print(sum1)
-    print(sum2)
+    return sum
+
+
+def between(start, mid, end):
+    if start < end:
+        return start < mid < end
+
+    return start > mid > end
 
 
 if __name__ == "__main__":
