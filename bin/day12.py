@@ -1,48 +1,60 @@
 from advent import input
-import itertools
-import re
+import functools
 
 
 def main():
-    sum = 0
+    p1, p2 = 0, 0
     for line in input.lines():
-        sum += process_line(line)
+        p1 += process_line(line)
+        p2 += process_line(expand(line))
 
-    print(sum)
+    print(f"part 1: {p1}")
+    print(f"part 2: {p2}")
 
 
 def process_line(line):
     springs, dir_str = line.split()
-    springs = list(springs)
     dirs = tuple(int(n) for n in dir_str.split(","))
-
-    questions = [i for i, c in enumerate(springs) if c == "?"]
-
-    sum = 0
-
-    for prod in itertools.product([".", "#"], repeat=len(questions)):
-        new = springs.copy()
-        i = 0
-        for idx in questions:
-            new[idx] = prod[i]
-            i += 1
-
-        if is_valid("".join(new), dirs):
-            sum += 1
-
-    return sum
+    return compute(springs, dirs)
 
 
-def is_valid(line, dirs):
-    bits = re.findall(r"(#+)", line)
-    if len(bits) != len(dirs):
-        return False
+# This solution mostly stolen from Diderikdm on reddit
+@functools.cache
+def compute(springs, counts):
+    if not counts:
+        return 1 if "#" not in springs else 0
 
-    for bit, wantlen in zip(bits, dirs):
-        if len(bit) != wantlen:
-            return False
+    hunk_len, counts = counts[0], counts[1:]
+    hashes_remaining = sum(counts)
+    dots_remaining = len(counts)
 
-    return True
+    result = 0
+
+    for i in range(1 + len(springs) - hashes_remaining - dots_remaining - hunk_len):
+        if "#" in springs[:i]:
+            break
+
+        mid = i + hunk_len
+        nxt = mid + 1
+
+        if (
+            mid <= len(springs)  # not off the end
+            and "." not in springs[i:mid]  # no spacers in this hunk
+            and springs[mid:nxt] != "#"  # last char of hunk isn't #
+        ):
+            result += compute(springs[nxt:], counts)
+
+    return result
+
+
+def expand(line):
+    springs, dirs = line.split()
+    return " ".join(
+        [
+            "?".join([springs] * 5),
+            ",".join([dirs] * 5),
+        ]
+    )
 
 
 if __name__ == "__main__":
