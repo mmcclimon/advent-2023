@@ -4,31 +4,25 @@ from collections import deque
 
 def main():
     grid = {}
-    max_r, max_c = 0, 0
 
     for r, line in enumerate(input.lines()):
-        max_r += 1
-        max_c = 0
         for c, char in enumerate(line):
-            max_c += 1
+            grid[r, c] = char
 
-            if char != ".":
-                grid[r, c] = char
-
-    print("part 1:", do_beam(grid, max_r, max_c, (0, 0, "E")))
-    print("part 2:", part_two(grid, max_r, max_c))
+    print("part 1:", do_beam(grid, (0, 0, "E")))
+    print("part 2:", part_two(grid))
 
 
-dirs = {"N": (-1, 0), "E": (0, 1), "S": (1, 0), "W": (0, -1)}
+def step(r, c, dir):
+    return {
+        "N": (r - 1, c, dir),
+        "E": (r, c + 1, dir),
+        "S": (r + 1, c, dir),
+        "W": (r, c - 1, dir),
+    }[dir]
 
 
-def new_dir(r, c, dir):
-    global dirs
-    dr, dc = dirs[dir]
-    return r + dr, c + dc, dir
-
-
-def do_beam(grid, max_r, max_c, start):
+def do_beam(grid, start):
     todo = deque()
     beam = set()
 
@@ -37,54 +31,54 @@ def do_beam(grid, max_r, max_c, start):
     while todo:
         r, c, d = todo.popleft()
 
-        if (r, c, d) in beam:
-            continue
-
-        if (not 0 <= r < max_r) or (not 0 <= c < max_c):
+        if (r, c, d) in beam or (r, c) not in grid:
             continue
 
         beam.add((r, c, d))
 
-        match grid.get((r, c), ".") + d:
+        match grid[r, c] + d:
             case r"-N" | r"-S":
-                todo.append(new_dir(r, c, "E"))
-                todo.append(new_dir(r, c, "W"))
+                todo.append(step(r, c, "E"))
+                todo.append(step(r, c, "W"))
             case r"|E" | r"|W":
-                todo.append(new_dir(r, c, "N"))
-                todo.append(new_dir(r, c, "S"))
+                todo.append(step(r, c, "N"))
+                todo.append(step(r, c, "S"))
             case r"/N":
-                todo.append(new_dir(r, c, "E"))
+                todo.append(step(r, c, "E"))
             case r"/S":
-                todo.append(new_dir(r, c, "W"))
+                todo.append(step(r, c, "W"))
             case r"/E":
-                todo.append(new_dir(r, c, "N"))
+                todo.append(step(r, c, "N"))
             case r"/W":
-                todo.append(new_dir(r, c, "S"))
+                todo.append(step(r, c, "S"))
             case r"\N":
-                todo.append(new_dir(r, c, "W"))
+                todo.append(step(r, c, "W"))
             case r"\S":
-                todo.append(new_dir(r, c, "E"))
+                todo.append(step(r, c, "E"))
             case r"\E":
-                todo.append(new_dir(r, c, "S"))
+                todo.append(step(r, c, "S"))
             case r"\W":
-                todo.append(new_dir(r, c, "N"))
+                todo.append(step(r, c, "N"))
             case _:
-                todo.append(new_dir(r, c, d))
+                todo.append(step(r, c, d))
 
     energized = {(r, c) for r, c, _ in beam}
     return len(energized)
 
 
-def part_two(grid, max_r, max_c):
+def part_two(grid):
     best = 0
-    for r in range(max_r):
-        e = do_beam(grid, max_r, max_c, (r, 0, "E"))
-        w = do_beam(grid, max_r, max_c, (r, max_c - 1, "W"))
+    rows = 1 + max(r for r, _ in grid)
+    cols = 1 + max(c for _, c in grid)
+
+    for r in range(rows):
+        e = do_beam(grid, (r, 0, "E"))
+        w = do_beam(grid, (r, cols - 1, "W"))
         best = max(e, w, best)
 
-    for c in range(max_c):
-        s = do_beam(grid, max_r, max_c, (0, c, "S"))
-        n = do_beam(grid, max_r, max_c, (max_r - 1, c, "N"))
+    for c in range(cols):
+        s = do_beam(grid, (0, c, "S"))
+        n = do_beam(grid, (rows - 1, c, "N"))
         best = max(s, n, best)
 
     return best
