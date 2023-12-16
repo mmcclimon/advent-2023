@@ -2,11 +2,6 @@ from advent import input
 from collections import deque
 
 
-def mprint(*args):
-    return
-    print(*args)
-
-
 def main():
     grid = {}
     max_r, max_c = 0, 0
@@ -21,6 +16,16 @@ def main():
                 grid[r, c] = char
 
     print("part 1:", do_beam(grid, max_r, max_c, (0, 0, "E")))
+    print("part 2:", part_two(grid, max_r, max_c))
+
+
+dirs = {"N": (-1, 0), "E": (0, 1), "S": (1, 0), "W": (0, -1)}
+
+
+def new_dir(r, c, dir):
+    global dirs
+    dr, dc = dirs[dir]
+    return r + dr, c + dc, dir
 
 
 def do_beam(grid, max_r, max_c, start):
@@ -31,14 +36,11 @@ def do_beam(grid, max_r, max_c, start):
 
     while todo:
         r, c, d = todo.popleft()
-        mprint(f"considering {r, c, d}")
 
         if (r, c, d) in beam:
-            mprint("  seen")
             continue
 
         if (not 0 <= r < max_r) or (not 0 <= c < max_c):
-            mprint("  out of the grid")
             continue
 
         beam.add((r, c, d))
@@ -47,55 +49,45 @@ def do_beam(grid, max_r, max_c, start):
             case r"-N" | r"-S":
                 todo.append(new_dir(r, c, "E"))
                 todo.append(new_dir(r, c, "W"))
-                mprint(f"  -, added {todo[-2]} and {todo[-1]}")
             case r"|E" | r"|W":
                 todo.append(new_dir(r, c, "N"))
                 todo.append(new_dir(r, c, "S"))
-                mprint(f"  |, added {todo[-2]} and {todo[-1]}")
             case r"/N":
                 todo.append(new_dir(r, c, "E"))
-                mprint(f"  /, added {todo[-1]}")
             case r"/S":
                 todo.append(new_dir(r, c, "W"))
-                mprint(f"  /, added {todo[-1]}")
             case r"/E":
                 todo.append(new_dir(r, c, "N"))
-                mprint(f"  /, added {todo[-1]}")
             case r"/W":
                 todo.append(new_dir(r, c, "S"))
-                mprint(f"  /, added {todo[-1]}")
             case r"\N":
                 todo.append(new_dir(r, c, "W"))
-                mprint(f"  \\, added {todo[-1]}")
             case r"\S":
                 todo.append(new_dir(r, c, "E"))
-                mprint(f"  \\, added {todo[-1]}")
             case r"\E":
                 todo.append(new_dir(r, c, "S"))
-                mprint(f"  \\, added {todo[-1]}")
             case r"\W":
                 todo.append(new_dir(r, c, "N"))
-                mprint(f"  \\, added {todo[-1]}")
             case _:
-                # empty space, yo
-                # dr, dc = dirs[d]
-                todo.append((new_dir(r, c, d)))
-                char = grid.get((r, c), ".")
-                mprint(f"  {char}, added {todo[-1]}")
-
-    mprint("done?", beam)
+                todo.append(new_dir(r, c, d))
 
     energized = {(r, c) for r, c, _ in beam}
     return len(energized)
 
 
-dirs = {"N": (-1, 0), "E": (0, 1), "S": (1, 0), "W": (0, -1)}
+def part_two(grid, max_r, max_c):
+    best = 0
+    for r in range(max_r):
+        e = do_beam(grid, max_r, max_c, (r, 0, "E"))
+        w = do_beam(grid, max_r, max_c, (r, max_c - 1, "W"))
+        best = max(e, w, best)
 
+    for c in range(max_c):
+        s = do_beam(grid, max_r, max_c, (0, c, "S"))
+        n = do_beam(grid, max_r, max_c, (max_r - 1, c, "N"))
+        best = max(s, n, best)
 
-def new_dir(r, c, dir):
-    global dirs
-    dr, dc = dirs[dir]
-    return r + dr, c + dc, dir
+    return best
 
 
 if __name__ == "__main__":
