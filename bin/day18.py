@@ -6,63 +6,46 @@ def main():
 
     for line in input.lines():
         dir, n, color = line.split()
-        lines.append((dir, int(n), color))
+        lines.append((dir, int(n), color[2:-1]))
 
-    grid = make_grid(lines)
-    print(fill_grid(grid, (1, 1)))
+    print("part 1:", area((dir, n) for dir, n, _ in lines))
+    print("part 2:", area(correct(color) for _, _, color in lines))
 
 
-def make_grid(lines):
-    grid = set()
-    grid.add((0, 0))
+def correct(color):
+    return "RDLU"[int(color[-1])], int(color[:-1], 16)
+
+
+def area(pairs):
+    vertices = [(0, 0)]
+    perim = 0
 
     dirs = {"U": (-1, 0), "D": (1, 0), "R": (0, 1), "L": (0, -1)}
 
-    pos = (0, 0)
-
-    for line in lines:
-        dir, n, _ = line
+    for dir, n in pairs:
+        r, c = vertices[-1]
         dr, dc = dirs[dir]
-        for i in range(n):
-            pos = (pos[0] + dr, pos[1] + dc)
-            grid.add(pos)
 
-    return grid
+        vertices.append((r + dr * n, c + dc * n))
+        perim += n
 
-
-def fill_grid(grid, start):
-    todo = [start]
-
-    def neighbors(r, c):
-        ret = []
-        for dr, dc in [(-1, 0), (1, 0), (0, 1), (0, -1)]:
-            if (r + dr, c + dc) not in grid:
-                ret.append((r + dr, c + dc))
-
-        return ret
-
-    while todo:
-        cur = todo.pop()
-        if cur not in grid:
-            grid.add(cur)
-            todo.extend(neighbors(*cur))
-
-    return len(grid)
+    return shoelace(vertices, perim)
 
 
-def pg(grid):
-    rs = [r for r, _ in grid]
-    cs = [c for _, c in grid]
+def shoelace(vertices, perim):
+    n = len(vertices) - 1
+    s1, s2 = 0, 0
 
-    for r in range(min(rs), max(rs) + 1):
-        for c in range(min(cs), max(cs) + 1):
-            if (r, c) == (0, 0):
-                print("S", end="")
-            elif (r, c) in grid:
-                print("#", end="")
-            else:
-                print(".", end="")
-        print("")
+    for i in range(n):
+        j = i + 1
+        s1 += vertices[i][0] * vertices[j][1]
+        s2 += vertices[i][1] * vertices[j][0]
+
+    # catch the ends
+    s1 += vertices[n][0] * vertices[0][1]
+    s2 += vertices[0][0] * vertices[n][1]
+
+    return int((abs(s1 - s2) / 2) + (perim / 2) + 1)
 
 
 if __name__ == "__main__":
