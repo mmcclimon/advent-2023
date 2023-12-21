@@ -2,55 +2,9 @@ digraph {
 button -> broadcaster
 broadcaster -> {sr, ch, hd, bx}
 
-// flip-flops
-// bf [style="filled" fillcolor="#69e9d9"]
-bp {style="filled" fillcolor="#69e9d8"}
-bx {style="filled" fillcolor="#69e9d9"}
-cb {style="filled" fillcolor="#69e9d9"}
-cc {style="filled" fillcolor="#69e9d9"}
-cd {style="filled" fillcolor="#69e9d9"}
-ch {style="filled" fillcolor="#69e9d9"}
-cl {style="filled" fillcolor="#69e9d9"}
-cr {style="filled" fillcolor="#69e9d9"}
-cv {style="filled" fillcolor="#69e9d9"}
-ds {style="filled" fillcolor="#69e9d9"}
-ff {style="filled" fillcolor="#69e9d9"}
-fj {style="filled" fillcolor="#69e9d9"}
-fn {style="filled" fillcolor="#69e9d9"}
-gm {style="filled" fillcolor="#69e9d9"}
-gx {style="filled" fillcolor="#69e9d9"}
-hd {style="filled" fillcolor="#69e9d9"}
-hv {style="filled" fillcolor="#69e9d9"}
-jd {style="filled" fillcolor="#69e9d9"}
-jz {style="filled" fillcolor="#69e9d9"}
-ks {style="filled" fillcolor="#69e9d9"}
-kt {style="filled" fillcolor="#69e9d9"}
-lc {style="filled" fillcolor="#69e9d9"}
-ln {style="filled" fillcolor="#69e9d9"}
-lr {style="filled" fillcolor="#69e9d9"}
-mc {style="filled" fillcolor="#69e9d9"}
-nh {style="filled" fillcolor="#69e9d9"}
-nn {style="filled" fillcolor="#69e9d9"}
-pf {style="filled" fillcolor="#69e9d9"}
-pl {style="filled" fillcolor="#69e9d9"}
-pm {style="filled" fillcolor="#69e9d9"}
-pr {style="filled" fillcolor="#69e9d9"}
-qj {style="filled" fillcolor="#69e9d9"}
-qk {style="filled" fillcolor="#69e9d9"}
-qm {style="filled" fillcolor="#69e9d9"}
-qp {style="filled" fillcolor="#69e9d9"}
-qq {style="filled" fillcolor="#69e9d9"}
-rz {style="filled" fillcolor="#69e9d9"}
-sb {style="filled" fillcolor="#69e9d9"}
-sf {style="filled" fillcolor="#69e9d9"}
-sr {style="filled" fillcolor="#69e9d9"}
-tj {style="filled" fillcolor="#69e9d9"}
-vl {style="filled" fillcolor="#69e9d9"}
-vm {style="filled" fillcolor="#69e9d9"}
-vz {style="filled" fillcolor="#69e9d9"}
-xm {style="filled" fillcolor="#69e9d9"}
-xz {style="filled" fillcolor="#69e9d9"}
-zd {style="filled" fillcolor="#69e9d9"}
+// flip-flops; listing all these out makes the resulting graph much nicer
+bp bx cb cc cd ch cl cr cv ds ff fj fn gm gx hd hv jd jz ks kt lc ln lr
+mc nh nn pf pl pm pr qj qk qm qp qq rz sb sf sr tj vl vm vz xm xz zd
 
 bf -> {C_qx, pf}
 bp -> {C_db, jz}

@@ -1,5 +1,6 @@
 from advent import input
 from collections import deque
+import math
 
 
 def main():
@@ -49,7 +50,7 @@ def part_two(lines):
         "bx qp cb kt rz cv xz jd vm cl bf pf qx zl".split(),
     )
 
-    return g1 * g2 * g3 * g4
+    return math.lcm(g1, g2, g3, g4)
 
 
 def do_subgraph(lines, include):
