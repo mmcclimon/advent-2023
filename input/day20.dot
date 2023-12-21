@@ -1,0 +1,118 @@
+digraph {
+button -> broadcaster
+broadcaster -> {sr, ch, hd, bx}
+
+// flip-flops
+// bf [style="filled" fillcolor="#69e9d9"]
+bp {style="filled" fillcolor="#69e9d8"}
+bx {style="filled" fillcolor="#69e9d9"}
+cb {style="filled" fillcolor="#69e9d9"}
+cc {style="filled" fillcolor="#69e9d9"}
+cd {style="filled" fillcolor="#69e9d9"}
+ch {style="filled" fillcolor="#69e9d9"}
+cl {style="filled" fillcolor="#69e9d9"}
+cr {style="filled" fillcolor="#69e9d9"}
+cv {style="filled" fillcolor="#69e9d9"}
+ds {style="filled" fillcolor="#69e9d9"}
+ff {style="filled" fillcolor="#69e9d9"}
+fj {style="filled" fillcolor="#69e9d9"}
+fn {style="filled" fillcolor="#69e9d9"}
+gm {style="filled" fillcolor="#69e9d9"}
+gx {style="filled" fillcolor="#69e9d9"}
+hd {style="filled" fillcolor="#69e9d9"}
+hv {style="filled" fillcolor="#69e9d9"}
+jd {style="filled" fillcolor="#69e9d9"}
+jz {style="filled" fillcolor="#69e9d9"}
+ks {style="filled" fillcolor="#69e9d9"}
+kt {style="filled" fillcolor="#69e9d9"}
+lc {style="filled" fillcolor="#69e9d9"}
+ln {style="filled" fillcolor="#69e9d9"}
+lr {style="filled" fillcolor="#69e9d9"}
+mc {style="filled" fillcolor="#69e9d9"}
+nh {style="filled" fillcolor="#69e9d9"}
+nn {style="filled" fillcolor="#69e9d9"}
+pf {style="filled" fillcolor="#69e9d9"}
+pl {style="filled" fillcolor="#69e9d9"}
+pm {style="filled" fillcolor="#69e9d9"}
+pr {style="filled" fillcolor="#69e9d9"}
+qj {style="filled" fillcolor="#69e9d9"}
+qk {style="filled" fillcolor="#69e9d9"}
+qm {style="filled" fillcolor="#69e9d9"}
+qp {style="filled" fillcolor="#69e9d9"}
+qq {style="filled" fillcolor="#69e9d9"}
+rz {style="filled" fillcolor="#69e9d9"}
+sb {style="filled" fillcolor="#69e9d9"}
+sf {style="filled" fillcolor="#69e9d9"}
+sr {style="filled" fillcolor="#69e9d9"}
+tj {style="filled" fillcolor="#69e9d9"}
+vl {style="filled" fillcolor="#69e9d9"}
+vm {style="filled" fillcolor="#69e9d9"}
+vz {style="filled" fillcolor="#69e9d9"}
+xm {style="filled" fillcolor="#69e9d9"}
+xz {style="filled" fillcolor="#69e9d9"}
+zd {style="filled" fillcolor="#69e9d9"}
+
+bf -> {C_qx, pf}
+bp -> {C_db, jz}
+bx -> {C_qx, qp}
+cb -> {kt}
+cc -> {nn}
+cd -> {pm, C_vc}
+ch -> {C_db, mc}
+cl -> {C_qx, bf}
+cr -> {gx, C_vc}
+cv -> {xz}
+ds -> {cc}
+ff -> {pl}
+fj -> {zd}
+fn -> {pr, C_gf}
+gm -> {tj, C_gf}
+gx -> {cd}
+hd -> {C_vc, nh}
+hv -> {lr}
+jd -> {C_qx, vm}
+jz -> {qj, C_db}
+ks -> {vz}
+kt -> {C_qx, rz}
+lc -> {C_gf, fn}
+ln -> {C_gf, qq}
+lr -> {sb}
+mc -> {ds, C_db}
+nh -> {hv}
+nn -> {ff, C_db}
+pf -> {C_qx}
+pl -> {sf, C_db}
+pm -> {C_vc, qk}
+pr -> {C_gf}
+qj -> {xm, C_db}
+qk -> {C_vc}
+qm -> {gm}
+qp -> {cb, C_qx}
+qq -> {qm, C_gf}
+rz -> {C_qx, cv}
+sb -> {ks, C_vc}
+sf -> {bp}
+sr -> {C_gf, vl}
+tj -> {lc, C_gf}
+vl -> {C_gf, fj}
+vm -> {cl}
+vz -> {cr, C_vc}
+xm -> {C_db}
+xz -> {jd}
+zd -> {ln, C_gf}
+
+
+
+
+
+// conjunctions
+C_db -> {ff, ds, sf, ch, cc, C_xf} [color="red"]
+C_gf -> {fj, qm, C_xn, sr} [color="red"]
+C_qn -> {C_th} [color="red"]
+C_qx -> {cb, cv, bx, xz, vm, C_zl} [color="red"]
+C_vc -> {lr, hd, ks, C_qn, gx, nh, hv} [color="red"]
+C_xf -> {C_th} [color="red"]
+C_xn -> {C_th} [color="red"]
+C_zl -> {C_th} [color="red"]
+C_th -> {rx} [color="red"]
+}
